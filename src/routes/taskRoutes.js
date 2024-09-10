@@ -49,14 +49,18 @@ router.put('/:id', async (req, res) => {
 
 // Eliminar una tarea
 router.delete('/:id', async (req, res) => {
-  const { id } = req.params;
-  try {
-    await deleteTask(req.db, id);
-    res.status(204).send();
-  } catch (error) {
-    res.status(500).json({ error: 'Error eliminando la tarea' });
-  }
-});
+    const { id } = req.params;
+    try {
+      const result = await deleteTask(req.db, id);
+      if (result.success) {
+        res.status(200).json({ message: result.message });
+      } else {
+        res.status(404).json({ error: result.message });
+      }
+    } catch (error) {
+      res.status(500).json({ error: 'Error eliminando la tarea' });
+    }
+  });
 
 export default (db) => {
   const routerWithDb = express.Router();
