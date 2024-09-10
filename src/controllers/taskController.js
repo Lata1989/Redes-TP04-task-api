@@ -1,16 +1,24 @@
 import { MongoClient, ObjectId } from 'mongodb';
 
+// Función para verificar si el ID es válido
+function isValidObjectId(id) {
+    return ObjectId.isValid(id) && new ObjectId(id).toString() === id;
+}
+
 // Función para obtener una tarea por su ID
 export async function getTaskById(db, id) {
-    try {
-      const task = await db.collection('tasks').findOne({ _id: new ObjectId(id) });
-      return task;
-    } catch (error) {
-      console.error('Error obteniendo la tarea:', error);
-      throw new Error('Error obteniendo la tarea');
+    if (!isValidObjectId(id)) {
+        throw new Error('ID inválido');
     }
-  }
 
+    try {
+        const task = await db.collection('tasks').findOne({ _id: new ObjectId(id) });
+        return task;
+    } catch (error) {
+        console.error('Error obteniendo la tarea:', error);
+        throw new Error('Error obteniendo la tarea');
+    }
+}
 // Función para obtener todas las tareas
 export async function getAllTasks(db) {
     const tasksCollection = db.collection('tasks');
@@ -73,13 +81,13 @@ export async function updateTask(db, id, updateData) {
 // Función para eliminar una tarea
 export async function deleteTask(db, id) {
     try {
-      const result = await db.collection('tasks').deleteOne({ _id: new ObjectId(id) });
-      if (result.deletedCount === 0) {
-        return { success: false, message: 'No se encontró ninguna tarea para eliminar' };
-      }
-      return { success: true, message: 'Tarea eliminada con éxito' };
+        const result = await db.collection('tasks').deleteOne({ _id: new ObjectId(id) });
+        if (result.deletedCount === 0) {
+            return { success: false, message: 'No se encontró ninguna tarea para eliminar' };
+        }
+        return { success: true, message: 'Tarea eliminada con éxito' };
     } catch (error) {
-      console.error('Error eliminando la tarea:', error);
-      throw new Error('Error eliminando la tarea');
+        console.error('Error eliminando la tarea:', error);
+        throw new Error('Error eliminando la tarea');
     }
-  }
+}

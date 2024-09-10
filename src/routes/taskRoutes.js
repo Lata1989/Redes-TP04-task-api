@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllTasks, createTask, updateTask, deleteTask, createTasksInBulk } from '../controllers/taskController.js';
+import { getAllTasks, createTask, updateTask, deleteTask, createTasksInBulk, getTaskById } from '../controllers/taskController.js';
 
 const router = express.Router();
 
@@ -14,7 +14,7 @@ router.get('/:id', async (req, res) => {
       res.status(404).json({ error: 'Tarea no encontrada' });
     }
   } catch (error) {
-    res.status(500).json({ error: 'Error obteniendo la tarea' });
+    res.status(400).json({ error: error.message || 'Error obteniendo la tarea' });
   }
 });
 
