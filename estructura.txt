@@ -1,0 +1,10 @@
+task-api/
+├── src/
+│   ├── controllers/
+│   │   └── taskController.js  # Controlador de tareas
+│   ├── models/
+│   │   └── taskModel.js       # Modelo de datos de tareas
+│   ├── routes/
+│   │   └── taskRoutes.js      # Rutas de tareas
+│   └── index.js               # Punto de entrada del servidor Express
+└── package.json               # Dependencias del subproyecto
