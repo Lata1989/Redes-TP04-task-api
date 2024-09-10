@@ -3,6 +3,21 @@ import { getAllTasks, createTask, updateTask, deleteTask, createTasksInBulk } fr
 
 const router = express.Router();
 
+// Obtener una tarea por su ID
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const task = await getTaskById(req.db, id);
+    if (task) {
+      res.status(200).json(task);
+    } else {
+      res.status(404).json({ error: 'Tarea no encontrada' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error obteniendo la tarea' });
+  }
+});
+
 // Obtener todas las tareas
 router.get('/', async (req, res) => {
   try {

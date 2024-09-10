@@ -1,5 +1,16 @@
 import { MongoClient, ObjectId } from 'mongodb';
 
+// Función para obtener una tarea por su ID
+export async function getTaskById(db, id) {
+    try {
+      const task = await db.collection('tasks').findOne({ _id: new ObjectId(id) });
+      return task;
+    } catch (error) {
+      console.error('Error obteniendo la tarea:', error);
+      throw new Error('Error obteniendo la tarea');
+    }
+  }
+
 // Función para obtener todas las tareas
 export async function getAllTasks(db) {
     const tasksCollection = db.collection('tasks');
